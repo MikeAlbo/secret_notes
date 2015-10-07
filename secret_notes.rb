@@ -1,6 +1,21 @@
-def exit
+def bye
     ## this method will save and close opened  file s
     exit 
+end
+
+  #this is to test code, user id will be a global var when a user is logged in
+    @user_id = "Michael"
+
+
+def create_file 
+    puts "Ok, start typing. Remember, this app ain't fancy so don't hit enter till your done typing. :-)"
+    
+    new_user_post = gets.chomp
+    post_count = 0
+    post_id = "#{@user_id} + #{post_count}" ## post count will += each time a new post is created.
+    puts new_user_post
+    puts post_id
+    file_list
 end
 
 def file_list
@@ -9,10 +24,19 @@ def file_list
     puts "Select NEW or VIEW"
     puts "you can exit at anytime by typing EXIT"
     file_list_input = gets.chomp.downcase
-    ## temp
-    puts file_list_input
-    puts "this is the end so far"
+    
+    if file_list_input == "new"
+        create_file
+    elsif file_list_input == "view"
+        
+        puts "tough crackers, nothing to view yet. this is the end so far"
     exit
+    elsif file_list_input == "exit"
+        bye
+    else 
+        puts "try again bro-dog, I'm not hear'n ya good"
+        file_list
+    end
 end
 
 
@@ -24,7 +48,7 @@ def create_account
     puts "Ok, now enter your password"
     new_password = gets.chomp
     ## entering the password should send it off to a private encryption method that uses the generated pin to encrypt the password.
-    puts. "Enter your password again just to be safe!"
+    puts "Enter your password again just to be safe!"
     validate_password = gets.chomp
     if new_password == validate_password
         prompt "they match!"
@@ -38,13 +62,20 @@ def create_account
 end
 
 def load_user
-    user_file = File.read('user.csv', 'a+') 
-    user_file.each do |user| 
-        if user == @current_new
+        if @intro_user == "current"
             puts "placeholder, you exist!"
-        else
+            ## temp goes strait to file list without validation
+            file_list
+        elsif @intro_user == "new"
             create_account
+        elsif @intro_user == "exit"
+            puts "ba-bye"
+            bye
+        else    
+            puts "I didn't get that! Try again"
+            intro
         end
+    
 end
 
 
@@ -52,7 +83,7 @@ end
 def intro
     puts "Welcome to SEECRET NOTES!"
     puts "Are you an CURRENT user or a NEW user?"
-    @current_new = gets.chomp
+    @intro_user = gets.chomp.downcase
     load_user
 end
 
@@ -62,15 +93,18 @@ def initiate
     if File.exist?('pin.txt') && File.exist?("user.csv")
         intro
     else
-        user_file = File.new("user.csv")
-        close
-        @application_pin = rand(1..z)
-        pin_file = File.new('pin.txt')
+        user_file = File.new("user.csv", "a+")
+        user_file.close
+        ##pin creation not functioning, need to generate a new pin if the file doesn't exist in the folder
+        @application_pin = rand(1..99)
+        pin_file = File.new('pin.txt', "a+")
         @application_pin
-        close
+        pin_file.close
+        
+        puts "reload program " #will be auto reload after init
     end
         
         
 end
-    
+
     initiate
