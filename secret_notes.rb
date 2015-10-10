@@ -61,6 +61,9 @@ def create_account
     
 end
 
+def current_user_load
+   # user_file =  ### decrypted user file, this method will run a decryption method
+
 def load_user
         if @intro_user == "current"
             puts "placeholder, you exist!"
@@ -87,21 +90,27 @@ def intro
     load_user
 end
 
+def create_user_file
+    user_file = File.new('user.txt', 'w')
+    user_file.close
+end
+
+def create_pin
+    pin_file = File.new('pin.txt', "w")
+    pin_file.puts(rand(1..99))
+    pin_file.close
+end
+
 
 
 def initiate
-    if File.exist?('pin.txt') && File.exist?("user.csv")
+    if File.exist?('pin.txt') && File.exist?("user.txt")
         intro
     else
-        user_file = File.new("user.csv", "a+")
-        user_file.close
-        ##pin creation not functioning, need to generate a new pin if the file doesn't exist in the folder
-        @application_pin = rand(1..99)
-        pin_file = File.new('pin.txt', "a+")
-        @application_pin
-        pin_file.close
-        
+        create_user_file
+        create_pin
         puts "reload program " #will be auto reload after init
+        initiate
     end
         
         
